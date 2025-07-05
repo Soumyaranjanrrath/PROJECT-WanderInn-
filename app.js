@@ -12,9 +12,11 @@ main()
     .catch(err => {
         console.error( err);
     });
+
 async function main() {
     await mongoose.connect(MONGO_URL)
 }
+
 app.get('/', (req, res) => {
     res.send(' Hii, iam root');
 });
