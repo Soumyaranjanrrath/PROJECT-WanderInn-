@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const allListing = require('./models/listing.js');
 const path = require('path');
+const Listing = require('./models/listing.js');
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/WanderInn";
 
@@ -20,6 +21,7 @@ async function main() {
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.send(' Hii, iam root');
@@ -29,6 +31,26 @@ app.get('/', (req, res) => {
 app.get('/listings', async (req, res) => {
     const allListings = await Listing.find({});
     res.render("listings/index", { allListings });
+});
+
+
+//New Route
+app.get('/listings/new', (req, res) => {
+    res.render('listings/new.ejs');
+});
+
+//Show Route
+app.get('/listings/:id', async (req, res) => {
+    let { id } = req.params;
+    const listing = await Listing.findById(id);
+    res.render("listings/show.ejs", { listing });
+});
+
+//Create Route
+app.post('/listings', async (req, res) => {
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect(`/listings/${newListing._id}`);
 });
 
 // app.get("/listing", async (req, res) => {
