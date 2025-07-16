@@ -97,8 +97,16 @@ body {
     background-color: #212121;
 }
 
+/* New Page */
+
 .add-btn {
     background-color: brown !important;
     border: none !important;
-    
+
+}
+
+/* Edit Page */
+.edit-btn {
+    background-color: brown !important;
+    border: none !important;
 }
