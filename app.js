@@ -52,10 +52,15 @@ app.get('/listings/:id', async (req, res) => {
 });
 
 //Create Route
-app.post('/listings', async (req, res) => {
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect(`/listings/${newListing._id}`);
+app.post('/listings', async (req, res, next) => {
+    try {
+        const newListing = new Listing(req.body.listing);
+        await newListing.save();
+        res.redirect(`/listings/${newListing._id}`);
+    } catch (err) {
+        next(err);
+    }
+    
 });
 
 //Edit Route
@@ -95,6 +100,10 @@ app.delete('/listings/:id', async (req, res) => {
 //     res.send("Successful testing");
         
 // });
+
+app.use((err, req, res, next )=>{
+    res.send("Something went wrong!")
+}) 
 
 app.listen(8080, () => {
     console.log('Server is running on port 8080');
